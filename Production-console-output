@@ -1,0 +1,365 @@
+Started by GitHub push by aniket01299
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor on ‘Agent-vinod’
+Running on Agent-vinod in /home/ubuntu/workspace/DjangoCICD
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone)
+[Pipeline] echo
+Cloning the code...
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Fetching changes from the remote Git repository
+ > git rev-parse --resolve-git-dir /home/ubuntu/workspace/DjangoCICD/.git # timeout=10
+ > git config remote.origin.url https://github.com/aniket01299/django-notes-app.git # timeout=10
+Fetching upstream changes from https://github.com/aniket01299/django-notes-app.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.53.0'
+ > git fetch --tags --force --progress -- https://github.com/aniket01299/django-notes-app.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 3518a5c2f897e59de1fcb0a4b0081d9cfce7709c (refs/remotes/origin/main)
+Commit message: "Update MySQL image version to 8.0"
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3518a5c2f897e59de1fcb0a4b0081d9cfce7709c # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 3518a5c2f897e59de1fcb0a4b0081d9cfce7709c # timeout=10
+ > git rev-list --no-walk 71d70f62c872bc3b9018e41b2f388f283b404bb8 # timeout=10
+[Pipeline] echo
+Code cloned successfully
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+Building Docker image...
+[Pipeline] sh
++ docker build -t notes-app:latest .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  6.537MB
+
+Step 1/9 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/9 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 359b02444730
+Step 3/9 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 81ef22f25c64
+Step 4/9 : RUN apt-get update     && apt-get upgrade -y     && apt-get install -y gcc default-libmysqlclient-dev pkg-config     && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 1b13c9fa3ede
+Step 5/9 : RUN pip install mysqlclient
+ ---> Using cache
+ ---> ac59135e43e8
+Step 6/9 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> d4452f18365b
+Step 7/9 : COPY . /app/backend
+ ---> Using cache
+ ---> 2791893d93b2
+Step 8/9 : EXPOSE 8000
+ ---> Using cache
+ ---> f1fb1276a291
+Step 9/9 : CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+ ---> Using cache
+ ---> 08367e9888d7
+Successfully built 08367e9888d7
+Successfully tagged notes-app:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to DockerHub)
+[Pipeline] echo
+This is Pushing the image to Docker Hub
+[Pipeline] withCredentials
+Masking supported pattern matches of $dockerHubPass
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u aniiket2025 --password-stdin
+Login Succeeded
++ docker tag notes-app:latest aniiket2025/notes-app:latest
++ docker push aniiket2025/notes-app:latest
+The push refers to repository [docker.io/aniiket2025/notes-app]
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Waiting
+795dbedde24d: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+c9723aa529b0: Layer already exists
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+b9f2f424a6b5: Layer already exists
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+79d5bd8a8d26: Layer already exists
+7496c3169594: Waiting
+081ccf923272: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+795dbedde24d: Waiting
+26dfe2fac1c4: Waiting
+0cd991bde752: Waiting
+344eb136dee8: Waiting
+91c91c91f1d2: Waiting
+89d573bf42b3: Waiting
+5222f56b9135: Waiting
+31607afbe512: Waiting
+7496c3169594: Waiting
+081ccf923272: Waiting
+795dbedde24d: Layer already exists
+26dfe2fac1c4: Layer already exists
+0cd991bde752: Layer already exists
+344eb136dee8: Layer already exists
+91c91c91f1d2: Layer already exists
+89d573bf42b3: Layer already exists
+5222f56b9135: Layer already exists
+31607afbe512: Layer already exists
+7496c3169594: Layer already exists
+081ccf923272: Layer already exists
+latest: digest: sha256:08367e9888d72d12918701829d5d30ee10382742c11ed341ade92fb95e912454 size: 3154
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ docker-compose down
+time="2026-06-23T05:33:37Z" level=warning msg="/home/ubuntu/workspace/DjangoCICD/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container nginx_cont Stopping 
+ Container nginx_cont Stopped 
+ Container nginx_cont Removing 
+ Container nginx_cont Removed 
+ Container django_cont Stopping 
+ Container django_cont Stopped 
+ Container django_cont Removing 
+ Container django_cont Removed 
+ Container db_cont Stopping 
+ Container db_cont Stopped 
+ Container db_cont Removing 
+ Container db_cont Removed 
+ Network djangocicd_notes-app-nw Removing 
+ Network djangocicd_notes-app-nw Removed 
++ docker-compose up -d --build
+time="2026-06-23T05:33:47Z" level=warning msg="/home/ubuntu/workspace/DjangoCICD/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-06-23T05:33:48Z" level=warning msg="Docker Compose requires buildx plugin to be installed"
+ Image django_app Building 
+ Image django_app Building 
+Sending build context to Docker daemon  539.8kB
+Sending build context to Docker daemon  1.064MB
+Sending build context to Docker daemon  1.589MB
+Sending build context to Docker daemon  2.026MB
+
+Step 1/10 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/10 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 359b02444730
+Step 3/10 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 81ef22f25c64
+Step 4/10 : RUN apt-get update     && apt-get upgrade -y     && apt-get install -y gcc default-libmysqlclient-dev pkg-config     && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> 1b13c9fa3ede
+Step 5/10 : RUN pip install mysqlclient
+ ---> Using cache
+ ---> ac59135e43e8
+Step 6/10 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Using cache
+ ---> d4452f18365b
+Step 7/10 : COPY . /app/backend
+ ---> Using cache
+ ---> 2791893d93b2
+Step 8/10 : EXPOSE 8000
+ ---> Using cache
+ ---> f1fb1276a291
+Step 9/10 : CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+ ---> Using cache
+ ---> 08367e9888d7
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 8832ff7ee225
+Successfully built 8832ff7ee225
+Successfully tagged django_app:latest
+ Image django_app Built 
+ Image django_app Built 
+ Image nginx Building 
+ Image nginx Building 
+Sending build context to Docker daemon     364B
+
+Step 1/3 : FROM nginx:1.23.3-alpine
+ ---> 6318314189b4
+Step 2/3 : COPY ./default.conf /etc/nginx/conf.d/default.conf
+ ---> Using cache
+ ---> 5ca45edb56a1
+Step 3/3 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 0be1123bab9d
+Successfully built 0be1123bab9d
+Successfully tagged nginx:latest
+ Image nginx Built 
+ Image nginx Built 
+ Network djangocicd_notes-app-nw Creating 
+ Network djangocicd_notes-app-nw Created 
+ Container db_cont Creating 
+ Container db_cont Created 
+ Container django_cont Creating 
+ Container django_cont Created 
+ Container nginx_cont Creating 
+ Container nginx_cont Created 
+ Container db_cont Starting 
+ Container db_cont Started 
+ Container django_cont Starting 
+ Container django_cont Started 
+ Container nginx_cont Starting 
+ Container nginx_cont Started 
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
